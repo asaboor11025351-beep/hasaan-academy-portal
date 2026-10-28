@@ -1,0 +1,1003 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HASAAN Academy | Online Management Portal</title>
+<style>
+:root{--navy:#12396b;--blue:#1c5595;--red:#c91e24;--gold:#f3b329;--bg:#f3f6fb;--ink:#17253b;--muted:#68758a;--line:#dce4ef;--green:#18845a}
+*{box-sizing:border-box}body{margin:0;font:15px/1.45 system-ui,-apple-system,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+button,input,select{font:inherit}button{cursor:pointer;border:0;border-radius:9px;padding:10px 14px;background:var(--navy);color:white;font-weight:650}button:hover{filter:brightness(1.08)}button.secondary{background:#e8eef7;color:var(--navy)}button.danger{background:#b4232b}button.green{background:var(--green)}button:disabled{opacity:.55;cursor:not-allowed}
+header{background:linear-gradient(120deg,#0b2850,#174c88);color:white;padding:15px 22px;display:flex;gap:15px;align-items:center;box-shadow:0 3px 15px #10294c22}
+header img{width:75px;height:75px;object-fit:contain;background:white;border-radius:12px;padding:3px}header h1{font-size:clamp(18px,3vw,26px);line-height:1.2;margin:0}header p{margin:5px 0 0;color:#d9e8ff;font-size:13px}
+main{max-width:1200px;margin:22px auto;padding:0 16px}
+.login{max-width:480px;margin:35px auto;background:white;padding:25px;border-radius:18px;box-shadow:0 8px 30px #16365c14}
+.login img{width:125px;display:block;margin:auto}.login h2{text-align:center;color:var(--navy);margin:10px 0 3px}.sub{text-align:center;color:var(--muted);margin:0 0 20px}
+.field{display:flex;flex-direction:column;gap:5px;margin:12px 0}.field label{font-size:13px;font-weight:700;color:#34445e}
+.field input,.field select{width:100%;padding:11px 12px;border:1px solid #cbd6e5;border-radius:9px;background:white;color:var(--ink)}
+.notice{background:#fff7df;border:1px solid #f0d58b;color:#76520a;padding:11px 13px;border-radius:10px;font-size:12px;margin-top:14px}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.role{background:#e3ecfa;color:var(--navy);padding:5px 9px;border-radius:99px;font-size:12px;font-weight:800}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}.tabs button{background:#e1e9f4;color:var(--navy)}.tabs button.active{background:var(--navy);color:white}
+.panel{background:white;border:1px solid var(--line);border-radius:15px;padding:18px;margin-bottom:16px;box-shadow:0 4px 18px #203b5b08}
+.panel h2,.panel h3{margin:0 0 13px;color:var(--navy)}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.stat{padding:15px;border-radius:12px;background:#f0f5fc;border:1px solid #e0e9f5}.stat small{display:block;color:var(--muted)}.stat strong{font-size:25px;color:var(--navy)}
+.row{display:flex;gap:10px;align-items:end;flex-wrap:wrap}.row .field{flex:1;min-width:145px}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+table{width:100%;border-collapse:collapse;min-width:580px}th,td{text-align:left;padding:10px;border-bottom:1px solid #e8edf4}
+th{background:#f3f6fb;color:#35445b;font-size:12px;text-transform:uppercase;letter-spacing:.03em}
+td input,td select{padding:7px;border:1px solid var(--line);border-radius:7px;max-width:150px}
+.tablewrap{overflow-x:auto}
+.empty{padding:22px;text-align:center;color:var(--muted)}.hidden{display:none!important}
+.foot{text-align:center;color:var(--muted);font-size:12px;padding:20px}
+.loading{opacity:.6;pointer-events:none}
+.badge-online{display:inline-flex;align-items:center;gap:6px;font-size:12px;background:#e6f7ef;color:#0d6b3d;padding:4px 10px;border-radius:99px;font-weight:700}
+.badge-online::before{content:"";width:8px;height:8px;background:#18845a;border-radius:50%;animation:pulse 1.5s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.status-msg{padding:10px 12px;border-radius:8px;font-size:13px;margin-top:10px}
+.status-msg.ok{background:#e6f7ef;color:#0d6b3d;border:1px solid #b7e4c7}
+.status-msg.err{background:#fdecea;color:#b4232b;border:1px solid #f5c2c0}
+@media(max-width:760px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}header{padding:12px}header img{width:58px;height:58px}.panel{padding:13px}.login{margin:20px auto;padding:19px}}
+@media(max-width:420px){.grid{grid-template-columns:1fr 1fr}.stat strong{font-size:21px}}
+</style>
+</head>
+<body>
+<header>
+  <img id="brandLogo" alt="HASAAN Academy logo">
+  <div>
+    <h1>HASAAN SCIENCE &amp; ENGLISH LANGUAGE ACADEMY</h1>
+    <p>MUBARAKPUR · Online Student &amp; Academic Management · Cloud Sync</p>
+  </div>
+</header>
+
+<main>
+  <!-- LOGIN VIEW -->
+  <section id="loginView" class="login">
+    <img id="loginLogo" alt="HASAAN Academy logo">
+    <h2>Academy Portal</h2>
+    <p class="sub">Secure online sign-in for staff</p>
+
+    <form id="loginForm">
+      <div class="field">
+        <label for="userId">User ID</label>
+        <input id="userId" autocomplete="username" required placeholder="Enter your user ID">
+      </div>
+      <div class="field">
+        <label for="password">Password</label>
+        <input id="password" type="password" autocomplete="current-password" required placeholder="Enter password">
+      </div>
+      <div class="field">
+        <label for="loginRole">Portal</label>
+        <select id="loginRole">
+          <option value="teacher">Subject Teacher</option>
+          <option value="admin">Administrator</option>
+        </select>
+      </div>
+      <button type="submit" id="loginBtn" style="width:100%">Sign in</button>
+      <p id="loginError" class="status-msg err hidden"></p>
+    </form>
+
+    <div class="notice">
+      <b>Online mode:</b> All data is stored in Firebase (Google Cloud) and syncs across every device.<br>
+      Only the Administrator can create Teacher accounts from inside the portal.<br>
+      Contact your Administrator if you need a Teacher account.
+    </div>
+  </section>
+
+  <!-- APP VIEW -->
+  <section id="appView" class="hidden">
+    <div class="topbar">
+      <div>
+        <h2 id="welcome" style="margin:0;color:var(--navy)">Dashboard</h2>
+        <span id="roleBadge" class="role"></span>
+        <span class="badge-online" style="margin-left:8px">Cloud Sync Active</span>
+      </div>
+      <button class="secondary" id="logoutBtn">Sign out</button>
+    </div>
+
+    <div class="grid" id="stats"></div>
+    <div class="tabs" id="tabs"></div>
+    <section id="tabContent"></section>
+  </section>
+
+  <div class="foot">HASAAN Academy · Mubarakpur · Online portal with cloud data sync · Keep student data private</div>
+</main>
+
+<!-- Firebase SDKs (compat for single-file simplicity) -->
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+
+<script>
+/* ============================================================
+   1. FIREBASE CONFIG – REPLACE THESE VALUES
+   ============================================================ */
+const firebaseConfig = {
+  apiKey: "AIzaSyC1Oz2ORjJsvL3qToQOx7ruUyLch3iiZMY",
+  authDomain: "hasaan-academy-a04e5.firebaseapp.com",
+  projectId: "hasaan-academy-a04e5",
+  storageBucket: "hasaan-academy-a04e5.firebasestorage.app",
+  messagingSenderId: "167068210725",
+  appId: "1:167068210725:web:819c906d81d2da0fff51cc"
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+// Enable offline persistence
+db.enablePersistence().catch(err => {
+  if (err.code === 'failed-precondition') console.warn('Multiple tabs open – persistence limited');
+  else if (err.code === 'unimplemented') console.warn('Browser does not support persistence');
+});
+
+/* ============================================================
+   2. LOGO (same as original)
+   ============================================================ */
+const LOGO = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQEBQoHBwYIDAoMDAsKCwsNDhIQDQ4RDgsLEBYQERMUFRUVDA8XGBYUGBIUFRT/2wBDAQMEBAUEBQkFBQkUDQsNFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBT/wAARCAYABgADASIAAhEBAxEB/8QAHgABAAAHAQEBAAAAAAAAAAAAAAECAwYHCAkFBAr/xABiEAABAwMCAwQGBQYHCwcLAQkBAAIDBAURBiEHEjEIE0FRCSJhcYGRFDKhsdEVI0JSYsEWM3KCkuHwFyRDU3ODk6Ky0vElNDVEVGPCGCZFRlVWdISUs+IZNmSjJzh1ZSg3/8QAHAEBAAEFAQEAAAAAAAAAAAAAAAYBAgQFBwMI/8QAQhEAAgIBAgUCBAMHAgQFBAMBAAECAwQFEQYSITFBE1EUIjJhM3GBBxUjQlKRsSShNENTYhYXNXLBRKLh8CVU0UX/2gAMAwEAAhEDEQA/AOqCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAv/9k=';
+
+document.querySelectorAll('#brandLogo,#loginLogo').forEach(x => x.src = LOGO);
+
+/* ============================================================
+   3. GLOBAL STATE
+   ============================================================ */
+const classes = ['6th','7th','8th','9th','10th','11th','12th'];
+const today = () => new Date().toISOString().slice(0,10);
+
+let currentUser = null;          // Firebase Auth user
+let currentProfile = null;       // Firestore profile {name, userId, role, subject}
+let activeTab = 'Dashboard';
+let selectedClass = '6th';
+let attendanceDate = today();
+
+// In-memory caches (kept in sync with Firestore)
+let students = [];
+let attendanceCache = {};        // key: date|class → {studentId: status}
+let feesCache = {};              // key: studentId|month → status
+let usersList = [];
+
+/* ============================================================
+   4. HELPERS
+   ============================================================ */
+function esc(s) {
+  return String(s ?? '').replace(/[&<>"']/g, c =>
+    ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function classSelect(id = 'classFilter', value = selectedClass) {
+  return `<select id="${id}">${classes.map(c =>
+    `<option ${c === value ? 'selected' : ''}>${c}</option>`).join('')}</select>`;
+}
+
+function studentsIn(c) {
+  return students.filter(s => s.className === c).sort((a,b) => a.name.localeCompare(b.name));
+}
+
+function attKey(date, c) { return date + '|' + c; }
+
+function showMsg(el, text, ok = true) {
+  el.className = 'status-msg ' + (ok ? 'ok' : 'err');
+  el.textContent = text;
+  el.classList.remove('hidden');
+}
+
+function setLoading(btn, loading) {
+  if (!btn) return;
+  btn.disabled = loading;
+  btn.dataset.orig = btn.dataset.orig || btn.textContent;
+  btn.textContent = loading ? 'Please wait…' : btn.dataset.orig;
+}
+
+/* ============================================================
+   5. FIREBASE DATA LAYER
+   ============================================================ */
+
+// Convert User ID → synthetic email used by Firebase Auth
+function toEmail(userId) {
+  return userId.trim().toLowerCase() + '@hasaan.academy';
+}
+
+async function loadStudents() {
+  const snap = await db.collection('students').orderBy('name').get();
+  students = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+}
+
+async function loadAttendance(date, className) {
+  const key = attKey(date, className);
+  const doc = await db.collection('attendance').doc(key).get();
+  attendanceCache[key] = doc.exists ? doc.data() : {};
+  return attendanceCache[key];
+}
+
+async function loadFeesForClass(className, month) {
+  const list = studentsIn(className);
+  for (const s of list) {
+    const key = s.id + '|' + month;
+    if (!(key in feesCache)) {
+      const doc = await db.collection('fees').doc(key).get();
+      feesCache[key] = doc.exists ? doc.data().status : 'Unpaid';
+    }
+  }
+}
+
+async function loadUsers() {
+  const snap = await db.collection('users').orderBy('name').get();
+  usersList = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+}
+
+/* ============================================================
+   6. AUTH
+   ============================================================ */
+document.getElementById('loginForm').onsubmit = async (e) => {
+  e.preventDefault();
+  const userId = document.getElementById('userId').value.trim();
+  const password = document.getElementById('password').value;
+  const role = document.getElementById('loginRole').value;
+  const errEl = document.getElementById('loginError');
+  const btn = document.getElementById('loginBtn');
+
+  errEl.classList.add('hidden');
+  setLoading(btn, true);
+
+  try {
+    const email = toEmail(userId);
+    const cred = await auth.signInWithEmailAndPassword(email, password);
+    const profileSnap = await db.collection('users').doc(cred.user.uid).get();
+
+    if (!profileSnap.exists) {
+      await auth.signOut();
+      throw new Error('User profile not found. Contact administrator.');
+    }
+
+    const profile = profileSnap.data();
+    if (profile.role !== role) {
+      await auth.signOut();
+      throw new Error('Incorrect portal selected for this account.');
+    }
+
+    currentUser = cred.user;
+    currentProfile = { ...profile, uid: cred.user.uid };
+    await enterApp();
+  } catch (err) {
+    let msg = 'Invalid User ID, password, or portal selection.';
+    if (err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password') {
+      msg = 'Invalid User ID or password.';
+    } else if (err.code === 'auth/too-many-requests') {
+      msg = 'Too many attempts. Please try again later.';
+    } else if (err.message) {
+      msg = err.message;
+    }
+    showMsg(errEl, msg, false);
+  } finally {
+    setLoading(btn, false);
+  }
+};
+
+document.getElementById('logoutBtn').onclick = async () => {
+  await auth.signOut();
+  currentUser = null;
+  currentProfile = null;
+  document.getElementById('appView').classList.add('hidden');
+  document.getElementById('loginView').classList.remove('hidden');
+  document.getElementById('password').value = '';
+};
+
+/* ============================================================
+   7. ENTER APP & RENDER
+   ============================================================ */
+async function enterApp() {
+  document.getElementById('loginView').classList.add('hidden');
+  document.getElementById('appView').classList.remove('hidden');
+
+  const name = currentProfile.name || currentProfile.userId;
+  document.getElementById('welcome').textContent =
+    name + ' · ' + (currentProfile.role === 'admin' ? 'Administrator Dashboard' : 'Subject Teacher Portal');
+  document.getElementById('roleBadge').textContent =
+    currentProfile.role === 'admin' ? 'ADMINISTRATOR' : 'SUBJECT TEACHER';
+
+  const names = currentProfile.role === 'admin'
+    ? ['Dashboard','Attendance','Students','Fees','Reports','User Accounts','Settings']
+    : ['Dashboard','Attendance','Students','My Subject'];
+
+  document.getElementById('tabs').innerHTML = names.map(n =>
+    `<button class="${n === activeTab ? 'active' : ''}" data-tab="${n}">${n}</button>`
+  ).join('');
+
+  document.getElementById('tabs').querySelectorAll('button').forEach(b => {
+    b.onclick = () => {
+      activeTab = b.dataset.tab;
+      document.querySelectorAll('.tabs button').forEach(x => x.classList.toggle('active', x === b));
+      renderTab();
+    };
+  });
+
+  await loadStudents();
+  await renderStats();
+  renderTab();
+}
+
+async function renderStats() {
+  const total = students.length;
+  const inClass = studentsIn(selectedClass);
+  let absent = 0;
+  if (attendanceDate === today()) {
+    const rec = await loadAttendance(attendanceDate, selectedClass);
+    absent = inClass.filter(s => rec[s.id] === 'Absent').length;
+  }
+  let paidText = 'Admin only';
+  if (currentProfile.role === 'admin') {
+    const month = today().slice(0,7);
+    await loadFeesForClass(selectedClass, month);
+    const paid = inClass.filter(s => feesCache[s.id + '|' + month] === 'Paid').length;
+    paidText = `${paid}/${inClass.length}`;
+  }
+
+  document.getElementById('stats').innerHTML = [
+    ['Students', total],
+    ['Class ' + selectedClass, inClass.length],
+    ['Absent today', attendanceDate === today() ? absent : '—'],
+    ['Fees paid this month', paidText]
+  ].map(([a,b]) => `<div class="stat"><small>${a}</small><strong>${b}</strong></div>`).join('');
+}
+
+/* ============================================================
+   8. TAB RENDERERS
+   ============================================================ */
+async function renderTab() {
+  await renderStats();
+  const root = document.getElementById('tabContent');
+  root.innerHTML = '<div class="panel"><p>Loading…</p></div>';
+
+  if (activeTab === 'Dashboard') {
+    root.innerHTML = `
+      <div class="panel">
+        <h2>Welcome to HASAAN Academy Online</h2>
+        <p>All data is stored in the cloud and syncs automatically across devices.</p>
+        <div class="row">
+          <div class="field"><label>Selected class</label>${classSelect()}</div>
+          <div class="field"><label>Attendance date</label>
+            <input id="datePick" type="date" value="${attendanceDate}">
+          </div>
+        </div>
+      </div>`;
+    bindFilters();
+    return;
+  }
+
+  if (activeTab === 'Attendance') {
+    root.innerHTML = `
+      <div class="panel">
+        <h2>Class-wise Attendance</h2>
+        <div class="row">
+          <div class="field"><label>Class</label>${classSelect()}</div>
+          <div class="field"><label>Date</label>
+            <input id="datePick" type="date" value="${attendanceDate}">
+          </div>
+        </div>
+        <div id="attendanceTable"></div>
+        <div class="actions">
+          <button id="saveAttendance">Save attendance</button>
+          <button class="green" id="absentImage">Generate absent-students image</button>
+          <button class="secondary" id="sendAbsentSMS">Send Absent SMS to Fathers</button>
+        </div>
+        <p style="font-size:12px;color:var(--muted)">Attendance is saved to the cloud. Use "Send Absent SMS" to open SMS for each absent student's father.</p>
+      </div>`;
+    bindFilters();
+    await renderAttendance();
+    document.getElementById('saveAttendance').onclick = saveAttendance;
+    document.getElementById('absentImage').onclick = () => makeReportImage('absent');
+    document.getElementById('sendAbsentSMS').onclick = sendAbsentSMS;
+    return;
+  }
+
+  if (activeTab === 'Students') {
+    root.innerHTML = `
+      <div class="panel">
+        <h2>Student Register</h2>
+        ${currentProfile.role === 'admin' ? `
+          <div class="row">
+            <div class="field"><label>Student Name</label>
+              <input id="newName" placeholder="Student full name"></div>
+            <div class="field"><label>Father's Name</label>
+              <input id="newFatherName" placeholder="Father's name"></div>
+            <div class="field"><label>Father Contact Number</label>
+              <input id="newFatherContact" placeholder="03XX-XXXXXXX" type="tel"></div>
+            <div class="field"><label>Class</label>${classSelect('newClass')}</div>
+            <button id="addStudent">Add student</button>
+          </div>` : ''}
+        <div class="row">
+          <div class="field"><label>Filter class</label>${classSelect('studentFilter')}</div>
+        </div>
+        <div id="studentTable"></div>
+      </div>`;
+    document.getElementById('studentFilter').onchange = e => {
+      selectedClass = e.target.value;
+      renderStats();
+      renderStudents();
+    };
+    if (currentProfile.role === 'admin') {
+      document.getElementById('addStudent').onclick = addStudent;
+    }
+    await renderStudents();
+    return;
+  }
+
+  if (activeTab === 'Fees' && currentProfile.role === 'admin') {
+    root.innerHTML = `
+      <div class="panel">
+        <h2>Monthly Fee Collection · Administrator Only</h2>
+        <div class="row">
+          <div class="field"><label>Class</label>${classSelect()}</div>
+          <div class="field"><label>Fee month</label>
+            <input type="month" id="feeMonth" value="${today().slice(0,7)}"></div>
+          <div class="field"><label>Monthly fee (PKR)</label>
+            <input id="feeAmount" type="number" min="0" value="1000"></div>
+        </div>
+        <div id="feeTable"></div>
+        <div class="actions">
+          <button id="saveFees">Save fee status</button>
+          <button class="green" id="unpaidImage">Generate unpaid-fee image</button>
+          <button class="secondary" id="sendFeeSMS">Send Fee Reminder SMS to Fathers</button>
+        </div>
+        <p style="font-size:12px;color:var(--muted)">After the 9th of every month, use "Send Fee Reminder SMS" for unpaid students.</p>
+      </div>`;
+    bindFilters();
+    await renderFees();
+    document.getElementById('saveFees').onclick = saveFees;
+    document.getElementById('unpaidImage').onclick = () => makeReportImage('unpaid');
+    document.getElementById('sendFeeSMS').onclick = sendFeeReminderSMS;
+    return;
+  }
+
+  if (activeTab === 'Reports' && currentProfile.role === 'admin') {
+    root.innerHTML = `
+      <div class="panel">
+        <h2>Class Reports</h2>
+        <div class="row">
+          <div class="field"><label>Class</label>${classSelect()}</div>
+          <div class="field"><label>Date</label>
+            <input id="datePick" type="date" value="${attendanceDate}"></div>
+        </div>
+        <div class="actions">
+          <button id="absentImage" class="green">Download absent report image</button>
+          <button id="unpaidImage">Download unpaid-fee image</button>
+          <button class="secondary" id="sendAbsentSMS">Send Absent SMS</button>
+          <button class="secondary" id="sendFeeSMS">Send Fee Reminder SMS</button>
+        </div>
+      </div>`;
+    bindFilters();
+    document.getElementById('absentImage').onclick = () => makeReportImage('absent');
+    document.getElementById('unpaidImage').onclick = () => makeReportImage('unpaid');
+    document.getElementById('sendAbsentSMS').onclick = sendAbsentSMS;
+    document.getElementById('sendFeeSMS').onclick = sendFeeReminderSMS;
+    return;
+  }
+
+  if (activeTab === 'User Accounts' && currentProfile.role === 'admin') {
+    root.innerHTML = `
+      <div class="panel">
+        <h2>Create Subject Teacher Accounts</h2>
+        <p style="font-size:13px;color:var(--muted);margin-bottom:12px">
+          Only one Administrator is allowed. You can create Teacher accounts only.
+        </p>
+        <div class="row">
+          <div class="field"><label>Full name</label>
+            <input id="accountName" placeholder="Teacher full name"></div>
+          <div class="field"><label>User ID</label>
+            <input id="accountUser" placeholder="Unique user ID"></div>
+          <div class="field"><label>Temporary password</label>
+            <input id="accountPass" type="password" placeholder="Set password (min 6)"></div>
+          <div class="field"><label>Subject</label>
+            <select id="accountSubject">
+              <option>Mathematics</option><option>English</option><option>Biology</option>
+              <option>General Science</option><option>Physics</option><option>Chemistry</option>
+              <option>General Knowledge</option><option>All subjects</option>
+            </select>
+          </div>
+        </div>
+        <div class="actions"><button id="createAccount">Create Teacher Account</button></div>
+        <p style="font-size:12px;color:var(--muted)">Accounts are stored securely in Firebase Authentication + Firestore.</p>
+      </div>
+      <div class="panel">
+        <h3>Existing Accounts</h3>
+        <div class="tablewrap" id="accountsTable"></div>
+      </div>`;
+
+    document.getElementById('createAccount').onclick = createAccountFromAdmin;
+    await loadUsers();
+    renderAccountsTable();
+    return;
+  }
+
+  if (activeTab === 'My Subject' && currentProfile.role === 'teacher') {
+    root.innerHTML = `
+      <div class="panel">
+        <h2>Subject Teacher Portal</h2>
+        <div class="grid">
+          <div class="stat"><small>Teacher</small>
+            <strong style="font-size:18px">${esc(currentProfile.name)}</strong></div>
+          <div class="stat"><small>Assigned Subject</small>
+            <strong style="font-size:18px">${esc(currentProfile.subject || 'Not assigned')}</strong></div>
+        </div>
+        <p>Use Attendance to mark class attendance and Student Register to view student lists.
+           Fee records and account administration are restricted to administrators.</p>
+      </div>`;
+    return;
+  }
+
+  if (activeTab === 'Settings' && currentProfile.role === 'admin') {
+    root.innerHTML = `
+      <div class="panel">
+        <h2>Administrator Settings</h2>
+        <p>This is the live online portal. All records are stored in Firebase (Google Cloud) and sync across devices.</p>
+        <div class="notice">
+          For production use: tighten Firestore security rules, enable App Check, and restrict who can create accounts.
+        </div>
+        <div class="actions">
+          <button class="danger" id="clearData">Delete all demo data (students, attendance, fees)</button>
+        </div>
+      </div>`;
+    document.getElementById('clearData').onclick = clearAllData;
+    return;
+  }
+
+  root.innerHTML = '<div class="panel"><h2>Portal unavailable</h2></div>';
+}
+
+/* ============================================================
+   9. BIND FILTERS & SUB-RENDERERS
+   ============================================================ */
+function bindFilters() {
+  const cf = document.getElementById('classFilter');
+  if (cf) cf.onchange = e => { selectedClass = e.target.value; renderTab(); };
+  const dp = document.getElementById('datePick');
+  if (dp) dp.onchange = e => { attendanceDate = e.target.value || today(); renderTab(); };
+}
+
+async function renderAttendance() {
+  const list = studentsIn(selectedClass);
+  const rec = await loadAttendance(attendanceDate, selectedClass);
+  const el = document.getElementById('attendanceTable');
+  if (!list.length) {
+    el.innerHTML = '<div class="empty">No students in this class yet. Administrator can add students in Student Register.</div>';
+    return;
+  }
+  el.innerHTML = `<div class="tablewrap"><table>
+    <thead><tr><th>#</th><th>Student</th><th>Attendance</th></tr></thead>
+    <tbody>${list.map((s,i) => `
+      <tr>
+        <td>${i+1}</td>
+        <td>${esc(s.name)}</td>
+        <td>
+          <select data-att="${s.id}">
+            <option ${(!rec[s.id] || rec[s.id]==='Present') ? 'selected' : ''}>Present</option>
+            <option ${rec[s.id]==='Absent' ? 'selected' : ''}>Absent</option>
+          </select>
+        </td>
+      </tr>`).join('')}
+    </tbody></table></div>`;
+}
+
+async function saveAttendance() {
+  const btn = document.getElementById('saveAttendance');
+  setLoading(btn, true);
+  try {
+    const obj = {};
+    document.querySelectorAll('[data-att]').forEach(s => obj[s.dataset.att] = s.value);
+    const key = attKey(attendanceDate, selectedClass);
+    await db.collection('attendance').doc(key).set(obj);
+    attendanceCache[key] = obj;
+    await renderStats();
+    alert('Attendance saved for ' + selectedClass + ' on ' + attendanceDate + '.');
+  } catch (err) {
+    alert('Error saving attendance: ' + err.message);
+  } finally {
+    setLoading(btn, false);
+  }
+}
+
+async function addStudent() {
+  const name = document.getElementById('newName').value.trim();
+  const fatherName = document.getElementById('newFatherName').value.trim();
+  const fatherContact = document.getElementById('newFatherContact').value.trim();
+  if (!name) { alert('Enter the student name.'); return; }
+  if (!fatherName) { alert("Enter Father's Name."); return; }
+  if (!fatherContact) { alert('Enter Father Contact Number.'); return; }
+  const btn = document.getElementById('addStudent');
+  setLoading(btn, true);
+  try {
+    const ref = await db.collection('students').add({
+      name,
+      fatherName,
+      fatherContact,
+      className: document.getElementById('newClass').value,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    students.push({
+      id: ref.id,
+      name,
+      fatherName,
+      fatherContact,
+      className: document.getElementById('newClass').value
+    });
+    document.getElementById('newName').value = '';
+    document.getElementById('newFatherName').value = '';
+    document.getElementById('newFatherContact').value = '';
+    await renderTab();
+  } catch (err) {
+    alert('Error adding student: ' + err.message);
+  } finally {
+    setLoading(btn, false);
+  }
+}
+
+async function renderStudents() {
+  const filterClass = document.getElementById('studentFilter')?.value || selectedClass;
+  const list = studentsIn(filterClass);
+  const el = document.getElementById('studentTable');
+  if (!list.length) {
+    el.innerHTML = '<div class="empty">No students added for this class.</div>';
+    return;
+  }
+  el.innerHTML = `<div class="tablewrap"><table>
+    <thead><tr>
+      <th>#</th><th>Student Name</th><th>Father's Name</th><th>Father Contact</th><th>Class</th>
+      ${currentProfile.role==='admin' ? '<th>Action</th>' : ''}
+    </tr></thead>
+    <tbody>${list.map((s,i) => `
+      <tr>
+        <td>${i+1}</td>
+        <td>${esc(s.name)}</td>
+        <td>${esc(s.fatherName || '—')}</td>
+        <td>${esc(s.fatherContact || '—')}</td>
+        <td>${s.className}</td>
+        ${currentProfile.role==='admin' ?
+          `<td><button class="danger" data-del="${s.id}">Remove</button></td>` : ''}
+      </tr>`).join('')}
+    </tbody></table></div>`;
+
+  document.querySelectorAll('[data-del]').forEach(b => {
+    b.onclick = async () => {
+      if (!confirm('Remove this student permanently?')) return;
+      try {
+        await db.collection('students').doc(b.dataset.del).delete();
+        students = students.filter(s => s.id !== b.dataset.del);
+        await renderTab();
+      } catch (err) {
+        alert('Error: ' + err.message);
+      }
+    };
+  });
+}
+
+async function renderFees() {
+  const m = document.getElementById('feeMonth')?.value || today().slice(0,7);
+  const list = studentsIn(selectedClass);
+  await loadFeesForClass(selectedClass, m);
+  const el = document.getElementById('feeTable');
+  if (!list.length) {
+    el.innerHTML = '<div class="empty">No students in this class yet.</div>';
+    return;
+  }
+  el.innerHTML = `<div class="tablewrap"><table>
+    <thead><tr><th>#</th><th>Student</th><th>Status for ${m}</th></tr></thead>
+    <tbody>${list.map((s,i) => {
+      const v = feesCache[s.id + '|' + m] || 'Unpaid';
+      return `<tr>
+        <td>${i+1}</td>
+        <td>${esc(s.name)}</td>
+        <td>
+          <select data-fee="${s.id}">
+            <option ${v==='Paid'?'selected':''}>Paid</option>
+            <option ${v==='Unpaid'?'selected':''}>Unpaid</option>
+          </select>
+        </td>
+      </tr>`;
+    }).join('')}
+    </tbody></table></div>`;
+  document.getElementById('feeMonth').onchange = renderFees;
+}
+
+async function saveFees() {
+  const btn = document.getElementById('saveFees');
+  setLoading(btn, true);
+  try {
+    const m = document.getElementById('feeMonth').value;
+    const batch = db.batch();
+    document.querySelectorAll('[data-fee]').forEach(s => {
+      const key = s.dataset.fee + '|' + m;
+      const ref = db.collection('fees').doc(key);
+      batch.set(ref, { status: s.value, updatedAt: firebase.firestore.FieldValue.serverTimestamp() });
+      feesCache[key] = s.value;
+    });
+    await batch.commit();
+    await renderStats();
+    alert('Fee statuses saved for ' + m + '.');
+  } catch (err) {
+    alert('Error: ' + err.message);
+  } finally {
+    setLoading(btn, false);
+  }
+}
+
+async function createAccountFromAdmin() {
+  const name = document.getElementById('accountName').value.trim();
+  const userId = document.getElementById('accountUser').value.trim();
+  const password = document.getElementById('accountPass').value;
+  const subject = document.getElementById('accountSubject').value;
+  const role = 'teacher'; // Only Teacher accounts can be created. Administrator is limited to one.
+
+  if (!name || !userId || !password) {
+    alert('Enter name, User ID and password.');
+    return;
+  }
+  if (password.length < 6) {
+    alert('Password must be at least 6 characters.');
+    return;
+  }
+
+  const btn = document.getElementById('createAccount');
+  setLoading(btn, true);
+  try {
+    const existing = await db.collection('users').where('userId', '==', userId.toLowerCase()).get();
+    if (!existing.empty) {
+      alert('That User ID already exists.');
+      return;
+    }
+
+    const email = toEmail(userId);
+    const originalEmail = currentUser.email;
+    const originalPassword = prompt('For security, please re-enter YOUR current Administrator password to create the new Teacher account:');
+    if (!originalPassword) {
+      setLoading(btn, false);
+      return;
+    }
+
+    const cred = await auth.createUserWithEmailAndPassword(email, password);
+    await db.collection('users').doc(cred.user.uid).set({
+      name,
+      userId: userId.toLowerCase(),
+      role: 'teacher',
+      subject: subject,
+      email,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+
+    // Sign the new user out and sign the admin back in
+    await auth.signOut();
+    await auth.signInWithEmailAndPassword(originalEmail, originalPassword);
+
+    currentUser = auth.currentUser;
+    alert('Teacher account created successfully. Share the login details privately with the teacher.');
+    document.getElementById('accountName').value = '';
+    document.getElementById('accountUser').value = '';
+    document.getElementById('accountPass').value = '';
+    await loadUsers();
+    renderAccountsTable();
+  } catch (err) {
+    alert('Error: ' + (err.message || err));
+  } finally {
+    setLoading(btn, false);
+  }
+}
+
+function renderAccountsTable() {
+  const el = document.getElementById('accountsTable');
+  if (!usersList.length) {
+    el.innerHTML = '<p>No accounts yet.</p>';
+    return;
+  }
+  el.innerHTML = usersList.map(a => `
+    <div style="padding:10px;border-bottom:1px solid var(--line)">
+      <b>${esc(a.name)}</b> · ${esc(a.userId)} ·
+      ${a.role === 'admin' ? 'Administrator' : 'Subject Teacher'} ·
+      ${esc(a.subject || '—')}
+      ${a.userId !== 'admin' ? `
+        <button class="danger" style="float:right" data-userdel="${a.id}">Delete</button>` : ''}
+    </div>`).join('');
+
+  document.querySelectorAll('[data-userdel]').forEach(b => {
+    b.onclick = async () => {
+      if (!confirm('Delete this account from the system? (Auth user must be deleted manually in Firebase Console if needed)')) return;
+      try {
+        await db.collection('users').doc(b.dataset.userdel).delete();
+        usersList = usersList.filter(u => u.id !== b.dataset.userdel);
+        renderAccountsTable();
+      } catch (err) {
+        alert('Error: ' + err.message);
+      }
+    };
+  });
+}
+
+async function clearAllData() {
+  if (!confirm('Delete ALL students, attendance and fee records? This cannot be undone.')) return;
+  try {
+    // Delete in batches
+    const collections = ['students', 'attendance', 'fees'];
+    for (const col of collections) {
+      const snap = await db.collection(col).get();
+      const batch = db.batch();
+      snap.docs.forEach(d => batch.delete(d.ref));
+      await batch.commit();
+    }
+    students = [];
+    attendanceCache = {};
+    feesCache = {};
+    alert('All demo data cleared.');
+    await renderTab();
+  } catch (err) {
+    alert('Error: ' + err.message);
+  }
+}
+
+/* ============================================================
+   10. SMS HELPERS (opens phone SMS app with pre-filled message)
+   ============================================================ */
+function cleanPhone(num) {
+  if (!num) return '';
+  let p = String(num).replace(/[^0-9+]/g, '');
+  if (p.startsWith('03')) p = '92' + p.substring(1); // 03XX → 923XX
+  if (p.startsWith('3') && p.length === 10) p = '92' + p;
+  return p;
+}
+
+function openSMS(phone, message) {
+  const cleaned = cleanPhone(phone);
+  if (!cleaned) {
+    alert('No valid phone number found for this student.');
+    return;
+  }
+  const url = `sms:${cleaned}?body=${encodeURIComponent(message)}`;
+  window.open(url, '_blank');
+}
+
+async function sendAbsentSMS() {
+  const list = studentsIn(selectedClass);
+  const rec = await loadAttendance(attendanceDate, selectedClass);
+  const absentStudents = list.filter(s => rec[s.id] === 'Absent' && s.fatherContact);
+
+  if (!absentStudents.length) {
+    alert('No absent students with father contact number found for this class/date.');
+    return;
+  }
+
+  if (!confirm(`Send Absent SMS to ${absentStudents.length} father(s)?\n\nYour phone SMS app will open one by one.`)) return;
+
+  for (const s of absentStudents) {
+    const msg = `Assalam o Alaikum,\n\nToday your child ${s.name} (Class ${s.className}) was absent from HASAAN Science & English Language Academy, Mubarakpur.\n\nDate: ${attendanceDate}\n\nPlease ensure regular attendance.\n\nHASAAN Academy`;
+    openSMS(s.fatherContact, msg);
+    // Small delay so multiple SMS apps don't open at once on some phones
+    await new Promise(r => setTimeout(r, 800));
+  }
+}
+
+async function sendFeeReminderSMS() {
+  const m = document.getElementById('feeMonth')?.value || today().slice(0,7);
+  const list = studentsIn(selectedClass);
+  await loadFeesForClass(selectedClass, m);
+  const unpaid = list.filter(s => feesCache[s.id + '|' + m] !== 'Paid' && s.fatherContact);
+
+  if (!unpaid.length) {
+    alert('No unpaid students with father contact number found for this class/month.');
+    return;
+  }
+
+  // Check if today is after 9th
+  const day = new Date().getDate();
+  const after9th = day >= 9;
+
+  if (!after9th) {
+    if (!confirm('Today is before the 9th of the month.\nDo you still want to send fee reminder SMS?')) return;
+  }
+
+  if (!confirm(`Send Fee Reminder SMS to ${unpaid.length} father(s)?\n\nYour phone SMS app will open one by one.`)) return;
+
+  for (const s of unpaid) {
+    const msg = `Assalam o Alaikum,\n\nPlease submit the monthly Academy fee for your child ${s.name} (Class ${s.className}) for the month ${m}.\n\nHASAAN Science & English Language Academy, Mubarakpur.\n\nThank you.`;
+    openSMS(s.fatherContact, msg);
+    await new Promise(r => setTimeout(r, 800));
+  }
+}
+
+/* ============================================================
+   11. REPORT IMAGE GENERATOR
+   ============================================================ */
+async function makeReportImage(type) {
+  const list = studentsIn(selectedClass);
+  let names = [];
+  let title, subtitle;
+
+  if (type === 'absent') {
+    const rec = await loadAttendance(attendanceDate, selectedClass);
+    names = list.filter(s => rec[s.id] === 'Absent').map(s => s.name);
+    title = 'ABSENT STUDENTS';
+    subtitle = `Class ${selectedClass}  |  Date: ${attendanceDate}`;
+  } else {
+    const m = document.getElementById('feeMonth')?.value || today().slice(0,7);
+    await loadFeesForClass(selectedClass, m);
+    names = list.filter(s => feesCache[s.id + '|' + m] !== 'Paid').map(s => s.name);
+    title = 'UNPAID MONTHLY FEES';
+    subtitle = `Class ${selectedClass}  |  Month: ${m}`;
+  }
+
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d');
+  const w = 1000;
+  const h = Math.max(440, 250 + names.length * 48);
+  canvas.width = w;
+  canvas.height = h;
+
+  ctx.fillStyle = '#f5f8fc';
+  ctx.fillRect(0, 0, w, h);
+  ctx.fillStyle = '#12396b';
+  ctx.fillRect(0, 0, w, 155);
+  ctx.fillStyle = '#fff';
+  ctx.font = 'bold 31px Arial';
+  ctx.fillText('HASAAN SCIENCE & ENGLISH LANGUAGE ACADEMY', 42, 55);
+  ctx.font = 'bold 26px Arial';
+  ctx.fillText(title, 42, 100);
+  ctx.font = '20px Arial';
+  ctx.fillText('MUBARAKPUR', 42, 133);
+  ctx.fillStyle = '#27374f';
+  ctx.font = '22px Arial';
+  ctx.fillText(subtitle, 45, 200);
+  ctx.font = 'bold 20px Arial';
+  ctx.fillText('No.', 55, 245);
+  ctx.fillText('Student Name', 125, 245);
+  ctx.fillText('Count: ' + names.length, 760, 245);
+  ctx.strokeStyle = '#cbd6e5';
+  ctx.beginPath();
+  ctx.moveTo(45, 260);
+  ctx.lineTo(950, 260);
+  ctx.stroke();
+  ctx.font = '22px Arial';
+  names.forEach((n, i) => {
+    const y = 300 + i * 48;
+    ctx.fillStyle = i % 2 ? '#fff' : '#eaf0f8';
+    ctx.fillRect(42, y - 27, 910, 42);
+    ctx.fillStyle = '#17253b';
+    ctx.fillText(String(i + 1), 58, y);
+    ctx.fillText(n, 125, y);
+  });
+  if (!names.length) {
+    ctx.fillStyle = '#18845a';
+    ctx.font = 'bold 25px Arial';
+    ctx.fillText(type === 'absent' ? 'No absent students recorded.' : 'No unpaid fee records for this class.', 45, 315);
+  }
+  ctx.fillStyle = '#68758a';
+  ctx.font = '15px Arial';
+  ctx.fillText('Generated from HASAAN Academy Online Portal', 45, h - 18);
+
+  const a = document.createElement('a');
+  a.download = `hasaan-${type}-${selectedClass}-${type === 'absent' ? attendanceDate : (document.getElementById('feeMonth')?.value || today().slice(0,7))}.png`;
+  a.href = canvas.toDataURL('image/png');
+  a.click();
+}
+
+/* ============================================================
+   11. AUTH STATE LISTENER
+   ============================================================ */
+auth.onAuthStateChanged(async (user) => {
+  if (user && !currentProfile) {
+    // Page refresh while logged in
+    try {
+      const snap = await db.collection('users').doc(user.uid).get();
+      if (snap.exists) {
+        currentUser = user;
+        currentProfile = { ...snap.data(), uid: user.uid };
+        activeTab = 'Dashboard';
+        await enterApp();
+      } else {
+        await auth.signOut();
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }
+});
+</script>
+</body>
+</html>

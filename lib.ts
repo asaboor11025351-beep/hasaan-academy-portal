@@ -1,0 +1,12 @@
+import { createClient } from '@supabase/supabase-js';
+const url = import.meta.env.VITE_SUPABASE_URL as string | undefined;
+const key = import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined;
+export const configured = Boolean(url && key && !url.includes('YOUR_PROJECT'));
+export const supabase = configured ? createClient(url!, key!, { auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true } }) : null;
+export type Role = 'admin' | 'teacher';
+export type Profile = { id: string; role: Role; display_name: string };
+export type Student = { id: string; full_name: string; class_name: string; guardian_name: string | null; active: boolean };
+export const CLASSES = ['6th','7th','8th','9th','10th','11th','12th'];
+export const isoToday = () => new Date().toLocaleDateString('en-CA');
+export const currentMonth = () => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-01`; };
+export const friendlyError = (e: unknown) => e instanceof Error ? e.message : String((e as {message?:string})?.message || 'Something went wrong');
